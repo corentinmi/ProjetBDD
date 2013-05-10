@@ -1,0 +1,23 @@
+<?php
+
+require_once("model/Sql.php");
+require_once("controller/GetPostMgr.php");
+require_once("controller/PageSelector.php");
+
+Class GlobalCtrl {
+	
+	private $gpm;
+	private $sql;
+	private $page;
+	private $className;
+	private $pageCtrl;
+	
+	public function __construct() {
+		$this->sql = new Sql();
+		$this->gpm = new GetPostMgr();
+		$this->page = new PageSelector($this->gpm);
+	}
+	
+}
+
+?>
