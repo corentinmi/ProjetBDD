@@ -1,0 +1,762 @@
+@charset "UTF-8";
+
+/*
+ * GLOBAL
+ */
+
+/* Remove padding from most block elements */ 
+HTML, BODY, DIV, SPAN, TABLE, CAPTION, TBODY, TFOOT, THEAD, TR, TH, TD, IMG,
+DL, DD, DT, UL.tight, OL.tight, LI.tight
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+/* Remove top margin from headers */
+H1, H2, H3, H4, H5, H6
+{
+	margin-top: 0;
+}
+
+P:first-child
+{
+	margin: 0;
+}
+
+P
+{
+	margin: 15px 0 0 0;
+}
+
+/* Link colors */
+A:link, A:visited
+{
+	color: #0d890c;
+}
+
+A:active
+{
+	color: #890d0c;
+}
+
+/* Style the body */
+BODY
+{
+	background: #323232 url("/Global/images/background-metal.gif");
+	color: #ffffff;	
+	font: 10px Verdana, Arial, Helvetica, sans-serif;
+}
+
+/*
+ * CONTAINER:  Top-level DIV
+ */
+
+DIV#container
+{
+	position: relative;
+	width: 780px;
+	margin: 0 auto 0 auto;
+	padding: 0;
+}
+
+/*
+ * SECTION
+ *
+ * Any arbitrary main "section" of the page:  these are white boxes, given
+ * rounded corners, etc.
+ */
+
+DIV.section
+{
+}
+
+/* Draw rounded corners before the start of a section */
+DIV.section > DIV.start
+{
+	width: 726px;
+	height: 22px;
+	
+	margin: 1px 0 0 0;
+	padding: 0 27px 0 27px;
+	
+	background: transparent url("/Global/images/section-corners.gif") no-repeat 0 -86px;
+}
+
+/* First section on the page gets gradiant, padding from the top */
+DIV.section.first > DIV.start
+{
+	margin-top: 22px;
+	background: transparent url("/Global/images/section-corners.gif") no-repeat 0 0;
+}
+
+DIV.section > DIV.body
+{
+	position: relative;
+	width: 726px;		/* 780px - 27px padding - 27px padding */
+
+	/* Add 1px bottom padding (and remove 1px from margin) to uncollapse margins of children */
+	margin: 0 0 -1px 0;
+	padding: 0 27px 1px 27px;
+
+	background: transparent url("/Global/images/section-background.gif") repeat-y;
+	color: #000000;
+}
+
+DIV.section > DIV.end
+{
+	width: 726px;
+	height: 29px;
+	
+	padding: 0 27px 0 27px;
+	
+	/* 
+	 * Height reflects the image height, we have negative bottom padding to
+	 * bring the element below us up 9 pixels, flowing over the drop shadow
+	 */
+	margin: 0 0 -9px 0;
+	
+	background: transparent url("/Global/images/section-corners.gif") no-repeat 0 -109px;
+}
+
+DIV.section.last > DIV.end
+{
+	width: 726px;
+	margin: 0 0 22px 0;
+	padding-top: 35px;
+	
+	background: transparent url("/Global/images/section-corners.gif") no-repeat 0 -22px;
+}
+
+/*
+ * OBJECT SECTION
+ *
+ * This is any type of section which will take the entire width available
+ * to it (770px).  This will be used to display images, objects, applets,
+ * flash, etc.
+ */
+
+DIV.section.object
+{
+	width: 780px;
+	margin: 1px 0 0 0;
+	padding: 0;
+	background: none;
+}
+
+/* start and end divs have gradiant backgrounds */
+DIV.section.object > DIV.start
+{
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+DIV.section.object > DIV.body
+{
+	width: 770px;
+	margin: 0;
+	padding: 0 5px 0 5px;
+}
+
+DIV.section.object > DIV.end
+{
+	clear: both;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+/* Objects can have columns */
+
+DIV.section.object > DIV.body > DIV.column:first-child
+{
+	float: left;
+	margin: 0;
+}
+
+DIV.section.object DIV.body > DIV.column
+{
+	float: left;
+	margin: 0 0 0 1px;
+}
+
+/*
+ * HEADER
+ *
+ * Logo, top-level navigation bar, menu bar, etc
+ */
+DIV#header
+{
+	position: relative;
+	
+	color: #464646;
+}
+
+DIV#header a
+{
+	color: #464646;
+}
+
+/* Use CSS image replacement to hide the text and display an image via the background */
+DIV#header H1#logo
+{
+	display: block;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 196px;
+	height: 44px;
+	
+	background: transparent url("/Global/images/logo.gif") no-repeat left top;
+	text-indent: -9999px;
+	z-index: 1;
+}
+
+DIV#header H1#logo A
+{
+	display: block;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 196px;
+	height: 44px;
+}
+
+DIV#header DIV#navigation
+{
+	position: relative;
+	top: 0;
+	left: 218px;
+	
+	width: 505px;
+	min-height: 44px;
+	
+	margin: 0 0 22px 0;
+	padding: 0;
+	
+	text-align: right;
+	
+	color: #464646;
+	font-size: 11px;
+}
+
+DIV#header DIV#navigation A
+{
+	text-decoration: none;
+}
+
+/* Right-align everything in the navigation div */
+DIV#header DIV#navigation > *
+{
+	float: right;
+	clear: right;
+}
+
+DIV#header DIV#navigation:after
+{
+	display: block;
+	clear: both;
+	content: ".";
+	height: 0;
+	visibility: hidden;
+}
+
+/* Header search box */
+
+DIV#header DIV#navigation DIV#search
+{
+	position: relative;
+	margin-top: 8px;
+}
+
+DIV#header DIV#navigation DIV#search INPUT#search-text
+{
+	display: block;
+
+	float: left;
+	
+	/* With padding + border, min height of 26px */
+	min-height: 12px;
+	
+	margin: 0;
+	padding: 1px 5px 1px 5px;
+	font: 10px Verdana, Arial, Helvetica, sans-serif;
+
+	border: solid 1px #464646;
+}
+
+DIV#header DIV#navigation DIV#search INPUT#search-text.empty
+{
+	color: #9f9f9f;
+}
+
+DIV#header DIV#navigation DIV#search BUTTON.search-submit
+{
+	display: block;
+	float: left;
+	
+	width: 46px;
+	height: 16px;
+	
+	margin: 0;
+	padding: 0;
+	border: none;
+	
+	background: url("/Global/images/search-button.gif") no-repeat top right;
+	
+	text-indent: -9999px;
+	z-index: 1;
+}
+
+/* Optional "banner" for the front page:  tucks in slightly under the menubar */
+DIV#header + .banner
+{
+	display: block;
+	margin-top: -10px;
+}
+
+DIV.section .banner
+{
+	display: block;
+}
+
+/* Headers */
+DIV.section H1, H2
+{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+DIV.section H3, H4
+{
+	font-size: 12px;
+	font-weight: bold;
+}
+
+DIV.section H5, H6
+{
+	font-size: 10px;
+	font-weight: bold;
+}
+
+/*
+ * MENUBAR
+ *
+ * This uses CSS (plus some JavaScript for IE compatibility) to display a
+ * horizontal menu (ul#menubar) with optional dropdown menus.
+ */
+
+/* Menubar */
+UL#menubar
+{
+	width: 724px;
+	min-height: 28px;
+	
+	list-style: none;
+	margin: 0 0 22px 0;
+	padding: 0;
+	
+	background: #30aa2f url("/Global/images/menubar-background.gif") no-repeat top left;
+	
+	/* This bottom border needs to exist for Opera to render the height correctly =( */
+	border-bottom: solid 1px #88cc81;
+	border-right: solid 1px #88cc81;
+}
+
+UL#menubar:after
+{
+	display: block;
+	content: "";
+	clear: both;
+}
+
+/* Menu items in the menubar - move left -> right */
+UL#menubar LI
+{
+	float: left;
+}
+
+/* Menu items */
+UL#menubar LI A
+{
+	display: block;
+
+	/* With padding, minimum height of 28px */
+	min-height: 9px;
+	
+	padding: 10px 12px 9px 13px;
+	
+	/* Draw a one-pixel separator between list items */
+	border-left: solid 1px #88cc81;
+	
+	background: #30aa2f url("/Global/images/menubar-background.gif") no-repeat top left;
+	color: #ffffff;
+	
+	text-decoration: none;
+	white-space: nowrap;
+	
+	font-size: 9px;
+	
+	font-weight: bold;
+	font-family: Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+}
+
+/* Menu items turn black when their dropdowns open */
+UL#menubar LI:hover A
+{
+	background: #191919;	/* 90% black */
+	border-left: solid 1px #000000;
+}
+
+UL#menubar LI.labs
+{
+	float: right;
+}
+
+UL#menubar LI.labs A
+{
+	border-left: none;
+}
+
+/* Drop down menu - hidden on page load */
+UL#menubar UL
+{
+	list-style: none;
+	position: absolute;
+	left: -999px;
+	z-index: 999;
+}
+
+/* On parent hover, display the drop down menu */
+UL#menubar LI:hover UL
+{
+	left: auto;
+}
+
+/* Menu items in the drop down menu move top -> bottom */
+UL#menubar UL LI
+{
+	float: none;
+}
+
+/* Menu items in the drop down menu */
+UL#menubar LI:hover UL LI A
+{
+	display: block;
+	
+	color: #ffffff;
+
+	background: #000000;
+	opacity: 0.90;
+	
+	max-width: 725px;
+	
+	padding-right: 50px;
+	border: none;
+	
+	text-transform: none;
+	white-space: normal;
+	
+	font-weight: bold;
+	font-size: 10px;
+}
+
+/* Menu items have a green bg when hovered */
+UL#menubar LI:hover UL LI:hover A
+{
+	background: #30aa2f;
+}
+
+/*
+ * FOOTER
+ */
+
+DIV#footer
+{
+	position: relative;
+	
+	color: #9b9b9b;
+	
+	font-size: 9px;
+}
+
+DIV#footer A
+{
+	color: #9b9b9b;
+}
+
+DIV#footer .left
+{
+	width: 50%;
+}
+
+DIV#footer .right
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50%;
+	text-align: right;
+}
+
+/*
+ * LAYOUTS
+ *
+ * Some common layouts.  Stupid names because IE6's selectors are broken.
+ */
+
+/* TWO COLUMN layout: one (right) side column which is smaller than the left */
+DIV.two.column DIV.main-column
+{
+	float: left;
+	width: 532px;
+	margin-right: 44px;
+}
+
+DIV.two.column DIV.secondary-column
+{
+	float: left;
+	width: 150px;
+}
+
+/* THREE COLUMN layout: three equal size columns */
+DIV.three.column DIV.left-column
+{
+	float: left;
+	width: 226px;
+	margin-right: 24px;
+}
+
+DIV.three.column DIV.center-column
+{
+	float: left;
+	width: 226px;
+	margin-right: 24px;
+}
+
+DIV.three.column DIV.right-column
+{
+	float: left;
+	width: 226px;
+}
+
+DIV.three.column H3
+{
+	text-transform: uppercase;
+	color: #303030;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+/* ALL columnar layouts are floated and need a clear */
+DIV.column DIV.end
+{
+	clear: both;
+}
+
+/*
+ * LINKLIST: Visually emulates a pipe-separated list.  Used for lists of links.
+ */
+UL.linklist
+{
+	display: inline;
+	list-style: none;
+	text-indent: 0;
+}
+
+UL.linklist LI
+{
+	display: inline;
+	border-left: solid 1px;
+	margin: 0 0 0 0.3em;
+	padding: 0 0 0 0.5em;
+}
+
+UL.linklist LI:first-child
+{
+	border-left: none;
+	padding: 0;
+	margin: 0;
+}
+
+/*
+ * Sidebar boxes
+ */
+DIV.sidebar-box:first-child
+{
+	margin-top: 0;
+}
+
+DIV.sidebar-box
+{
+	position: relative;
+	
+	margin-top: 22px;
+	padding: 8px;
+	
+	background: #ffffff url("/Global/images/sidebar-background.gif") repeat-x bottom left;
+
+	border: solid 1px #9d9d9d;
+}
+
+DIV.sidebar-box H3
+{
+	margin: -9px -9px 6px -9px;
+	padding: 3px 0 3px 8px;
+	
+	font-size: 10px;
+	font-weight: bold;
+
+	background: #464646 url("/Global/images/sidebar-header-background.gif") no-repeat top left;
+	color: #ffffff;
+}
+
+DIV.sidebar-box UL
+{
+	display: block;
+	list-style: none;
+}
+
+DIV.sidebar-box P:first-child
+{
+	margin: 0;
+}
+
+DIV.sidebar-box P
+{
+	margin: 6px 0 0 0;
+}
+
+DIV.sidebar-box UL LI:first-child
+{
+	margin: 0;
+}
+
+DIV.sidebar-box UL LI
+{
+	margin-top: 6px;
+}
+
+/*
+ * LINKROWS
+ */
+UL.linkrows
+{
+	display: block;
+	list-style: none;
+	text-indent: 0;
+	
+	margin: -6px 0 0 0;
+}
+
+UL.linkrows LI
+{
+	display: block;
+}
+
+UL.linkrows LI A
+{
+	display: block;
+		
+	margin: -1px 0 0 0;
+	padding: 10px 0 10px 0;
+
+	border-top: solid 1px #9d9d9d;
+	border-bottom: solid 1px #9d9d9d;
+	border-collapse: collapse;
+
+	text-decoration: none;
+	color: #30aa2f;
+}
+
+UL.linkrows LI:hover A
+{
+	background: #e6e6e6;
+	
+	/* Give some padding when we change the bg color */
+	margin-left: -5px;
+	margin-right: -5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+UL.linkrows SPAN.header
+{
+	display: block;
+	color: #7d7d7d;
+}
+
+/*
+ * Download table
+ */
+TABLE.detail
+{
+	border-spacing: 0;
+	margin-top: 15px;
+}
+
+TABLE.detail TR
+{
+}
+
+TABLE.detail TR.header
+{
+	background: #efefef url("/Global/images/table-detail-header.gif") repeat-x top left;
+}
+
+TABLE.detail TR TH
+{
+	padding: 6px 10px 6px 10px;
+	text-align: left;
+	font-weight: bold;
+	font-size: 11px;
+	border-bottom: solid 1px #dddddd;
+}
+
+TABLE.detail TR.header TH.first
+{
+	background: transparent url("/Global/images/table-detail-header-first.gif") no-repeat top left;
+}
+
+TABLE.detail TR.header TH.last
+{
+	background: transparent url("/Global/images/table-detail-header-last.gif") no-repeat top right;
+}
+
+TABLE.detail TR.altrow
+{
+	background-color: #efefef;
+}
+
+TABLE.detail TR.highlight
+{
+	font-weight: bold;
+}
+
+TABLE.detail TD
+{
+	padding: 6px 10px 6px 10px;
+	border-bottom: solid 1px #dddddd;
+}
+
+TABLE.detail TD.first
+{
+	border-left: solid 1px #dddddd;
+}
+
+TABLE.detail TD.last
+{
+	border-right: solid 1px #dddddd;
+}

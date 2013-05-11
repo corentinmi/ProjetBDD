@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0039)http://kb.teamprise.com/article/view/27 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta http-equiv="Content-Language" content="en-us">
+		
+		<meta name="author" content="Teamprise">
+		<meta name="copyright" content="Copyright (c) 2008, Teamprise">
+		
+		<link rel="stylesheet" href="./Increasing the  entity expansion limit ._files/common.css" type="text/css" media="all">
+		
+		<!-- CSS for IE 5/6 -->
+		<!--[if lt IE 7]>
+			<link rel="stylesheet" href="/Global/css/ie6.css" type="text/css" media="all" />
+			<script src="/Global/js/ie7.js" type="text/javascript"></script>
+		<![endif]-->
+		
+		<!-- CSS for IE 7 -->
+		<!--[if lt IE 8]>
+			<link rel="stylesheet" href="/Global/css/ie7.css" type="text/css" media="all" />
+		<![endif]-->
+		
+		<script src="./Increasing the  entity expansion limit ._files/jquery.js" type="text/javascript"></script>
+		<script src="./Increasing the  entity expansion limit ._files/urchin.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		<!--
+			_uacct = "UA-71966-5";
+			urchinTracker();
+     	// -->
+		</script>
+		
+		<link rel="shortcut icon" type="image/x-icon" href="http://kb.teamprise.com/favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="http://kb.teamprise.com/favicon.ico">
+		<script src="./Increasing the  entity expansion limit ._files/application.js" type="text/javascript"></script>
+        <link href="./Increasing the  entity expansion limit ._files/base.css" media="screen" rel="stylesheet" type="text/css">
+        
+            
+                <link href="./Increasing the  entity expansion limit ._files/article.css" media="screen" rel="stylesheet" type="text/css">
+            
+        
+
+        <title>Teamprise Knowledge Base : TKB00027 Increasing the "entity expansion limit".</title>
+	</head>
+	<body>
+		<div id="container">
+			<div class="first last section">
+				<div class="start"></div>
+				<div class="body">
+					<div id="header">
+						<div class="top"></div>
+						<div class="body">
+							
+							<h1 id="logo"><a href="http://www.teamprise.com/">Teamprise</a></h1>
+
+							<div id="navigation">
+								<ul class="linklist tight">
+									<li><a href="https://csp.teamprise.com/">Store</a></li>
+								</ul>
+
+							</div>
+						</div>
+						<div class="end"></div>
+					</div>
+
+					
+
+
+
+
+<div id="kb_header">
+	<div id="small_search">
+	<form action="http://kb.teamprise.com/article/search" method="get" name="f">
+	  
+	  Search: <input id="query" name="query" size="25" type="text">&nbsp;<input type="submit" value="Search">
+	</form>
+	</div>
+	<h1>Teamprise Knowledge Base</h1>
+	<h2><span class="tag">TKB00027</span> Increasing the "entity expansion limit".</h2>
+    <div id="article_stats">Last updated 2008-06-11 18:41:59 UTC by Shaw Terwilliger</div>
+</div>
+
+
+
+
+
+<div class="kb_body">
+	<h1>Symptom</h1>
+
+<p>It may be necessary to increase the "entity expansion limit" set for your Teamprise client when uploading large files or dealing with large source code repositories.  If you receive an error message stating "Parser has reached the entity expansion limit "xxxxx" set by the Application", performing the directions listed under resolution should resolve the issue.</p>
+
+<p>This setting does not apply to Teamprise 2.0.</p>
+
+<p><img src="./Increasing the  entity expansion limit ._files/32"></p>
+
+<h1>Resolution</h1>
+
+<p>The entity expansion limit can be increased by using an additional Java VM argument when launching the Teamprise clients.  Use the VM argument <b>-DentityExpansionLimit=XXXX</b> (XXXX is an integer, 1000000 should be sufficient for large projects).</p>
+
+<h2>Plug-in for Eclipse</h2>
+
+<p>Add your VM argument after the <b>-vmargs</b> argument to Eclipse to change the expansion limit in the Teamprise Plug-in for Eclipse.  The command line should now resemble the following (this example is for Windows but the format of the additional parameter is identical on all platforms):</p>
+
+<pre><code>    C:\Program Files\Eclipse\Eclipse.exe -vmargs -Xmx512M -DentityExpansionLimit=1000000
+</code></pre>
+
+<h2>Explorer</h2>
+
+<p>To define the entity expansion limit parameter for the Teamprise Explorer, edit with a text editor the TeampriseExplorer.ini file that resides beside the Teamprise Explorer executable.  Add a line at the end of the file with contents like <b>-DentityExpansionLimit=1000000</b>, then save your changes to the file.  The TeampriseExplorer.ini file will look like the following after edit:</p>
+
+<pre><code>    -vmargs
+    -Xms256M
+    -Xmx512M
+    -DentityExpansionLimit=1000000
+</code></pre>
+
+<h2>Command-Line Client</h2>
+
+<p>To define the entity expansion limit parameter for the Teamprise command-line client, edit the launcher script (named "tf.cmd" on Windows and "tf" on Unix) with a text editor.  Find the line that begins with "java" or "exec java" and add a string like <b>-DentityExpansionLimit=1000000</b> after the word "java."  For Unix, the line should look like the following after the edit (all one line):</p>
+
+<pre><code>    exec java -DentityExpansionLimit=1000000 -Xmx512M -cp "$tp_classpath" 
+    "-Djava.library.path=$base_directory/native" $random_device_property 
+    com.teamprise.clc.Main "$@"
+</code></pre>
+
+<p>For Windows (all one line):</p>
+
+<pre><code>    java -DentityExpansionLimit=1000000 -Xmx512M -cp %TP_CLASSPATH% 
+    "-Djava.library.path=%BASE_DIRECTORY%native\win32\x86" com.teamprise.clc.scc.Main %*
+</code></pre>
+
+<p>Save your changes to the launcher script.  The new limit will take effect when you next run the command-line client.</p>
+
+<h1>Additional Information</h1>
+
+<p><b><a href="http://projectmobius.osu.edu/docs/faqs.php">http://projectmobius.osu.edu/docs/faqs.php</a></b></p>
+</div>
+
+<div id="article_qualifiers">
+
+    <div class="qualifier">
+	    <h3>Products affected:</h3>
+	    
+	        <ul class="article">
+	            
+	            <li class="article">Teamprise Command Line Client</li>
+	            
+	            <li class="article">Teamprise Explorer</li>
+	            
+	            <li class="article">Teamprise Plugin for Eclipse</li>
+	            
+	        </ul>
+	    
+	</div>
+	
+	<div class="qualifier">
+	    <h3>Releases affected:</h3>
+	    
+	        <ul class="article">
+	            
+	            <li class="article">1.0</li>
+	            
+	            <li class="article">1.1</li>
+	            
+	        </ul>
+	    
+	</div>
+	
+	<div class="qualifier">
+	    <h3>Platforms affected:</h3>
+	    
+	        <ul class="article">
+	            
+	            <li class="article">All</li>
+	            
+	        </ul>
+	    
+	</div>
+</div>
+
+<div id="article_references">
+
+	
+	
+	
+	
+</div>
+
+<div id="article_keywords">
+
+    Keywords:
+    <!-- TODO link each keyword to a search on that keyword -->
+    <span class="keyword">
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=SAX" class="keyword">SAX</a>
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=entityExpansionLimit" class="keyword">entityExpansionLimit</a>
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=define" class="keyword">define</a>
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=system" class="keyword">system</a>
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=property" class="keyword">property</a>
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=escape" class="keyword">escape</a>
+    	
+    		<a href="http://kb.teamprise.com/article/search?query=parser" class="keyword">parser</a>
+    	
+    </span>
+
+</div>
+
+				
+				</div>
+				<div class="end">
+					<div id="footer">
+						<div class="left">
+							Copyright © 2013 Teamprise.
+						</div>
+
+						<div class="right">
+							<ul class="linklist tight">
+								<li><a href="http://www.teamprise.com/company/privacy.html">Privacy</a></li>
+								<li><a href="http://www.teamprise.com/sitemap.html">Sitemap</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>  <!-- container -->
+	
+
+</body></html>

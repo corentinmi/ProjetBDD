@@ -1,0 +1,180 @@
+kb_body
+{
+    font-family:  sans-serif;
+    font-size: .75em;
+    	margin-left: 0px;
+	margin-top: 0px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+div#top
+{
+	float: left;
+	clear: both;
+	margin-bottom: 14px;
+	padding-top: 27px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+div#bottom
+{
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+div#logo
+{
+	margin-top: 3px;
+	margin-left: 30px;
+	float: left;
+}
+
+div#toplinks
+{
+	float: right;
+	margin-right: 40px;
+}
+
+/* This is a hack for Global for IE7 */
+div#header
+{
+  color: #464646;
+}
+
+div#kb_header
+{
+}
+
+div#main
+{
+   	padding: 20px;
+   	padding-top: 24px;
+   	margin-left: 20px;
+   	margin-right: 20px;
+	width: 90%;
+	background: url(/images/banner_sm.png);
+	background-repeat: repeat-x;
+	border-bottom: 3px solid #BABABA;
+	float: left;
+	clear: both;
+}
+
+div.flash
+{
+    font-weight: bold;
+    color: #333333;
+    background-color: #ffdcdb;
+    border: 1px solid #aa0000;
+    margin: 1em;
+    padding: 1em;
+}
+
+div.admin
+{
+	font-size: .9em;
+    color: #333333;
+    background-color: #dcdbff;
+    border: 1px solid #0000aa;
+    margin: 1em;
+    padding: 1em;
+}
+
+h1
+{
+    padding-top: 1em;
+    margin-top: 0em;
+}
+
+h2
+{
+    padding-top: 1em;
+    margin-top: 0em;
+}
+
+h3
+{
+    padding-top: .7em;
+    margin-top: 0em;
+}
+
+h4
+{
+    padding-top: .7em;
+    margin-top: 0em;
+}
+
+th
+{
+	font-weight: bold;
+}
+
+a:link
+{
+	color: #2f8927;
+}
+
+a:hover
+{
+	color: #0f6907;
+}
+	
+a:visited
+{ 
+	color: #0f6807;
+}
+	
+span.tag
+{
+    font-weight: bold;
+    color: #2f8927;
+}
+
+span.keyword
+{
+    font-weight: bold;
+}
+
+span.noMatch
+{
+    font-weight: italic;
+    color: #555555;
+}
+
+span.user
+{
+    font-weight: bold;
+    color: maroon;
+}
+
+div.pagination {
+	margin-top:10px;
+	
+}
+
+div.pagination span,
+div.pagination a {
+	padding:5px 10px;
+	border:1px solid #ccc;
+	text-decoration:none;
+}
+
+.page_info {
+	background:#2f8927;
+	color:#fff;
+	padding:5px 10px;
+	text-align:center;
+	margin-top: 10px;
+}
+
+div.pagination .current {
+	background:#2f8927;
+	color:#fff
+}
+
+div.pagination .gap {
+	border:none;
+}
