@@ -2,14 +2,14 @@
 
 class Catalog {
 	
-	private SearchDetails search;
+	private $search;
 	
 	public function __construct() {
 		
 	}
 	
 	public function setSearchDetails($orderBy, $asc, $field, $value, $index, $type) {
-		$this->searchDetails = new SearchDetails($orderBy, $asc, $field, $value, $index, $type);
+		$this->search = new SearchDetails($orderBy, $asc, $field, $value, $index, $type);
 	}
 	
 }
