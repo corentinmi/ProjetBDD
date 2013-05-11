@@ -1,5 +1,4 @@
 
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
@@ -9,8 +8,6 @@ import java.sql.SQLException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class MainClass {//http://www.java2s.com/Code/Java/Database-SQL-JDBC/Createtableformysqldatabase.htm
