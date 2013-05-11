@@ -11,7 +11,7 @@ Class Template {
 	}
 	
 	public function __construct() {
-		ob_start();
+		//ob_start();
 		$this->html = new Html();
 	}
 	
@@ -28,7 +28,7 @@ Class Template {
 	}
 	
 	public function finalize() {
-		ob_end_flush();
+		//ob_end_flush();
 	}
 	
 }

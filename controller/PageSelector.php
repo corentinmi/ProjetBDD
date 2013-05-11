@@ -19,7 +19,7 @@ Class PageSelector {
 				$pageCtrl = new $className($this->gpm);
 			}
 			else {
-				$this->pageName = "404";
+				$this->pageName = "Home";
 				require_once("controller/".$this->pageName."Ctrl.php");
 				$className = $this->pageName . "Ctrl";
 				$pageCtrl = new $className($this->gpm);

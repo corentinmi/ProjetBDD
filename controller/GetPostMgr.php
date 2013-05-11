@@ -14,7 +14,7 @@ Class GetPostMgr {
 	
 	public function get($item) {
 		if (isset($this->get[$item])) {
-			return addslashes($get($item));
+			return addslashes($this->get[$item]);
 		}
 		else
 			return false;
@@ -22,7 +22,7 @@ Class GetPostMgr {
 	
 	public function post($item) {
 		if (isset($this->post[$item])) {
-			return addslashes($get($item));
+			return addslashes($this->post[$item]);
 		}
 		else
 			return false;

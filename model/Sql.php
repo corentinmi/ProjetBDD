@@ -2,8 +2,35 @@
 
 class Sql extends mysqli {
 	
+	private $result;
+	private $req;
+	
 	public function __construct() {
-		parent::__construct("localhost", "root", "", "dblp");
+		parent::__construct("localhost", "root", "", "test");
+	}
+	
+	public function getResult() {
+		return $this->result;
+	}
+	
+	public function getResultArray() {
+		if ($this->result) {
+			$array = Array();
+			$line;
+			for ($i = 0; $i < $this->result->num_rows; $i++) {
+				$line = $this->result->fetch_assoc();
+				$array[$i] = $line;
+			}
+			return $array;
+		}
+		else
+			return false;
+	}
+	
+	public function query($req) {
+		$this->req = $req;
+		echo $req . "<br /><br />";
+		$this->result = parent::query($this->req);
 	}
 	
 }

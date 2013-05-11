@@ -16,6 +16,19 @@ Class Html {
 		return $html;
 	}
 	
+	public function makeTable($content) {
+		$html = "<table>";
+		foreach ($content as $line) {
+			$html .= "<tr>";
+			foreach ($line as $item) {
+				$html .= "<td>".$item."</td>";
+			}
+			$html .= "</tr>";
+		}
+		$html .= "</table>";
+		return $html;
+	}
+	
 }
 
 ?>
