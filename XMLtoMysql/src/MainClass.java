@@ -22,10 +22,10 @@ public class MainClass {//http://www.java2s.com/Code/Java/Database-SQL-JDBC/Crea
   private static final String BOOK_TABLE = "create table if not exists Book (DBLP_KEY INT PRIMARY KEY, isbn VARCHAR(20), editor_name VARCHAR(20)";
   private static final String THESIS_TABLE = "create table if not exists Thesis (DBLP_KEY INT PRIMARY KEY,masterifTrue BOOLEAN not null,isbnPhd VARCHAR(20))";
 
-  //private static final String EDITOR_TABLE = "create table if not exists Editor (DBLP_KEY INT PRIMARY KEY AUTO_INCREMENT, Ename VARCHAR(20) )";
+  private static final String EDITOR_TABLE = "create table if not exists Editor (DBLP_KEY INT PRIMARY KEY AUTO_INCREMENT, Ename VARCHAR(20) )";
 
   //Une ou deux tables pour editor?
-  //private static final String EDITOR_PUBLICATION_TABLE = "create table if not exists EditorPublication (DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY INT )";
+  private static final String EDITOR_PUBLICATION_TABLE = "create table if not exists EditorPublication (DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY INT )";
   private static final String SCHOOL_TABLE = "create table if not exists School (DBLP_KEY INT PRIMARY KEY, Sname VARCHAR(100) )";
   //Une ou deux tables pour school?
   private static final String SCHOOL_THESIS_TABLE = "create table if not exists SchoolThesis (DBLP_KEY INT PRIMARY KEY, DBLP_KEY_SCH INT )";
@@ -54,8 +54,8 @@ public class MainClass {//http://www.java2s.com/Code/Java/Database-SQL-JDBC/Crea
       stmt.executeUpdate(BOOK_TABLE);
       stmt.executeUpdate(THESIS_TABLE);
 
-      //stmt.executeUpdate(EDITOR_TABLE);
-      //stmt.executeUpdate(EDITOR_PUBLICATION_TABLE);
+      stmt.executeUpdate(EDITOR_TABLE);
+      stmt.executeUpdate(EDITOR_PUBLICATION_TABLE);
       
       stmt.executeUpdate(SCHOOL_TABLE);
       stmt.executeUpdate(SCHOOL_THESIS_TABLE);
