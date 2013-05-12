@@ -11,12 +11,12 @@ Class UniqueSearchDetails {
 	}
 	
 	public function makeUniqueArticleRequest() {
-		$this->sql = "SELECT title, url, year, publisher, volume, number, pages, journal_name, journal_year, editor_name FROM publications p, article a WHERE ((p.DBLP_KEY = ".$this->id.") AND (a.DBLP_KEY_PUBL = ".$this->id."))";
+		$this->sql = "SELECT title, url, year, publisher, volume, number, pages, journal_name, journal_year FROM publications p, article a WHERE ((p.DBLP_KEY = ".$this->id.") AND (a.DBLP_KEY_PUBL = ".$this->id."))";
 		return $this->sql;
 	}
 	
 	public function makeUniqueBookRequest() {
-		$this->sql = "SELECT title, url, year, publisher, isbn, editor_name FROM publications p, book b WHERE ((p.DBLP_KEY = ".$this->id.") AND (b.DBLP_KEY = ".$this->id."))";
+		$this->sql = "SELECT title, url, year, publisher, isbn FROM publications p, book b WHERE ((p.DBLP_KEY = ".$this->id.") AND (b.DBLP_KEY = ".$this->id."))";
 		return $this->sql;
 	}
 	
@@ -25,13 +25,12 @@ Class UniqueSearchDetails {
 		return $this->sql;
 	}
 	
-	public function makeModificationRequest($type, $title, $url, $year, $publisher, $isbn, $editor_name, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd) {
+	public function makeModificationRequest($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd) {
 		switch($type) {
 			case "article":
 				$this->sql = "UPDATE publications p, article a SET p.title='".$title."', 
 																   p.url='".$url."',
 																   p.publisher='".$publisher."',
-																   a.editor_name='".$editor_name."',
 																   a.volume='".$volume."',
 																   a.number='".$number."',
 																   a.pages='".$pages."',
@@ -43,7 +42,6 @@ Class UniqueSearchDetails {
 				$this->sql = "UPDATE publications p, book b SET p.title='".$title."',
 															   p.url='".$url."',
 															   p.publisher='".$publisher."',
-															   b.editor_name='".$editor_name."',
 															   b.isbn='".isbn."',
 															   p.year='".$year."' WHERE ((p.DBLP_KEY = ".$this->id.") AND (b.DBLP_KEY = ".$this->id."))";
 				break;

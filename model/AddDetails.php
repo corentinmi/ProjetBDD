@@ -7,13 +7,13 @@ Class AddDetails {
 			case "article":
 				$this->sql = "BEGIN; ";
 				$this->sql .= "INSERT INTO publications (title, url, publisher, year) VALUES ('".$title."', '".$url."', '".$publisher."', '".$year."'); ";
-				$this->sql .= "INSERT INTO article (DBLP_KEY_PUBL, volume, number, pages, journal_name, journal_year, editor_name) VALUES (LAST_INSERT_ID(), '".$volume."', '".$number."', '".$pages."', '".$journal_name."', '".$journal_year."', '".$editor_name."'); ";
+				$this->sql .= "INSERT INTO article (DBLP_KEY_PUBL, volume, number, pages, journal_name, journal_year) VALUES (LAST_INSERT_ID(), '".$volume."', '".$number."', '".$pages."', '".$journal_name."', '".$journal_year."'); ";
 				$this->sql .= "COMMIT;";
 				break;
 			case "book":
 				$this->sql = "BEGIN; ";
 				$this->sql .= "INSERT INTO publications (title, url, publisher, year) VALUES ('".$title."', '".$url."', '".$publisher."', '".$year."'); ";
-				$this->sql .= "INSERT INTO book (DBLP_KEY, isbn, editor_name) VALUES (LAST_INSERT_ID(), '".$isbn."', '".$editor_name."'); ";
+				$this->sql .= "INSERT INTO book (DBLP_KEY, isbn) VALUES (LAST_INSERT_ID(), '".$isbn."'); ";
 				$this->sql .= "COMMIT;";
 				break;
 			case "thesis":

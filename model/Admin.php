@@ -33,15 +33,15 @@ class Admin {
 		$this->sql = new Sql();
 	}
 	
-	public function editData($id, $type, $title, $url, $year, $publisher, $isbn, $editor_name, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd) {
+	public function editData($id, $type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd) {
 		$this->search = new UniqueSearchDetails($id);
 		
-		$this->sql->query($this->search->makeModificationRequest($type, $title, $url, $year, $publisher, $isbn, $editor_name, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd));
+		$this->sql->query($this->search->makeModificationRequest($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd));
 	}
 	
-	public function addData($type, $title, $url, $year, $publisher, $isbn, $editor_name, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd) {
+	public function addData($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd) {
 		$this->search = new AddDetails();
-		$this->sql->multi_query($this->search->makeAddRequest($type, $title, $url, $year, $publisher, $isbn, $editor_name, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd));
+		$this->sql->multi_query($this->search->makeAddRequest($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd));
 	}
 	
 	public function setUniqueSearch($id) {
