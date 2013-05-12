@@ -17,9 +17,9 @@ public class MainClass {//http://www.java2s.com/Code/Java/Database-SQL-JDBC/Crea
   private static final String AUTHOR_TABLE = "create table if not exists Author (DBLP_KEY_AUTHOR INT PRIMARY KEY,Aname VARCHAR(50))";
   private static final String PUBLICATION_AUTHOR_TABLE = "create table if not exists PublicationsAuthor (DBLP_KEY INT PRIMARY KEY, DBLP_KEY_AUTHOR INT)";
   //how to make double primary key??
-  private static final String ARTICLE_TABLE = "create table if not exists Article (DBLP_KEY_PUBL INT PRIMARY KEY, volume VARCHAR(10),number VARCHAR(15), pages VARCHAR(15),journal_name VARCHAR(20),journal_year YEAR(4), editor_name VARCHAR(20))";
+  private static final String ARTICLE_TABLE = "create table if not exists Article (DBLP_KEY_PUBL INT PRIMARY KEY, volume VARCHAR(10),number VARCHAR(15), pages VARCHAR(15),journal_name VARCHAR(20),journal_year YEAR(4))";
   //que est ce que c'est pages? Est ce qu'on fait une table pour les journaux ou on met ses infos sir la table article vu que il y a un seul par article.
-  private static final String BOOK_TABLE = "create table if not exists Book (DBLP_KEY INT PRIMARY KEY, isbn VARCHAR(20), editor_name VARCHAR(20)";
+  private static final String BOOK_TABLE = "create table if not exists Book (DBLP_KEY INT PRIMARY KEY, isbn VARCHAR(20))";
   private static final String THESIS_TABLE = "create table if not exists Thesis (DBLP_KEY INT PRIMARY KEY,masterifTrue BOOLEAN not null,isbnPhd VARCHAR(20))";
 
   private static final String EDITOR_TABLE = "create table if not exists Editor (DBLP_KEY INT PRIMARY KEY AUTO_INCREMENT, Ename VARCHAR(20) )";
