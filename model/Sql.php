@@ -33,6 +33,12 @@ class Sql extends mysqli {
 		$this->result = parent::query($this->req);
 	}
 	
+	public function multi_query($req) {
+		$this->req = $req;
+		echo $req . "<br /><br />";
+		$this->result = parent::multi_query($this->req);
+	}
+	
 }
 
 ?>

@@ -25,28 +25,64 @@ Class ShowCatalog extends Template {
 	
 	private function printCatalog() {
 		$table = $this->catalog->getTable();
-		$table = $this->makeTableHeader($table);
-		if ($table)
-			echo $this->html->makeTable($table);
+		
+		if ($table) {
+			$output = $this->makeTableHeader($table);
+			$output = $this->makeTableRowEnds($table, $output);
+			echo $this->html->makeTable($output);
+		}
 		else
 			echo "No Records Found";
 	}
 	
-	private function makeTableHeader($table) {
-		for ($i = 0; $i < count($table[0]); $i++) {
-			$table[0][$i] = (($this->catalog->getSearchDetails()->getOrderBy() == $table[0][$i]) && ($this->catalog->getSearchDetails()->getAsc())) ?
-					$this->html->makeLink("index.php?page=catalog&orderBy=".$table[0][$i].
-																"&asc=0".
-																"&type=".$this->catalog->getSearchDetails()->getType().
-																"&field=".$this->catalog->getSearchDetails()->getField().
-																"&value=".$this->catalog->getSearchDetails()->getValue(), $table[0][$i]) :
-					$this->html->makeLink("index.php?page=catalog&orderBy=".$table[0][$i].
-																"&asc=1".
-																"&type=".$this->catalog->getSearchDetails()->getType().
-																"&field=".$this->catalog->getSearchDetails()->getField().
-																"&value=".$this->catalog->getSearchDetails()->getValue(), $table[0][$i]);
+	private function makeTableRowEnds($table, $output) {
+		
+		$i = 1;
+		foreach ($table as $line) {
+			$j = count($line);
+			$get = Array("page" => "admin", "action" => "edit", "id" => $line["DBLP_KEY"]);
+			$output[$i][$j] = $this->html->makeGetLink("index.php", $get, "Edit");
+			$get = Array("page" => "admin", "action" => "delete", "id" => $line["DBLP_KEY"]);
+			$output[$i][$j+1] = $this->html->makeGetLink("index.php", $get, "Delete");
+			$i++;
 		}
-		return $table;
+		
+		return $output;
+	}
+	
+	private function makeTableHeader($table) {
+		$i = 0;
+		foreach ($table[0] as $field => $value) {
+			if ($field != "DBLP_KEY") {
+				$get = Array();
+				
+				$get["page"] = "catalog";
+				if ($this->catalog->getSearchDetails()->getType())
+					$get["type"] = $this->catalog->getSearchDetails()->getType();
+				if ($this->catalog->getSearchDetails()->getField())
+					$get["field"] = $this->catalog->getSearchDetails()->getField();
+				if ($this->catalog->getSearchDetails()->getValue())
+					$get["value"] = $this->catalog->getSearchDetails()->getValue();
+				$get["orderBy"] = $field;
+				$get["asc"] = (($this->catalog->getSearchDetails()->getOrderBy() == $field) && (!($this->catalog->getSearchDetails()->getAsc()))) ? 1 : 0;
+				
+				
+				$output[0][$i] = $this->html->makeGetLink("index.php", $get, ucfirst($field));
+				$i++;
+			}
+		}
+		$i = 1;
+		foreach ($table as $line) {
+			$j = 0;
+			foreach ($line as $field => $value) {
+				if ($field != "DBLP_KEY") {
+					$output[$i][$j] = $value;
+					$j++;
+				}
+			}
+			$i++;
+		}
+		return $output;
 	}
 	
 }
