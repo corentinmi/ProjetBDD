@@ -25,23 +25,23 @@ Class SearchDetails {
 	private function selectType() {
 		switch($this->type) {
 			case "article":
-				$this->sql = "SELECT DBLP_KEY, title, url, year, publisher, volume, number, pages, journal_name, journal_year ";
+				$this->sql = "SELECT p.DBLP_KEY, title, url, year, publisher, volume, number, pages, journal_name, journal_year ";
 				$this->sql .= "FROM article a, publications p WHERE (a.DBLP_KEY_PUBL = p.DBLP_KEY) ";
 				break;
 			case "book":
-				$this->sql = "SELECT DBLP_KEY, title, url, year, publisher, isbn ";
+				$this->sql = "SELECT p.DBLP_KEY, title, url, year, publisher, isbn ";
 				$this->sql .= "FROM book b, publications p WHERE (b.DBLP_KEY = p.DBLP_KEY) ";
 				break;
 			case "master":
-				$this->sql = "SELECT DBLP_KEY, title, url, year, publisher ";
+				$this->sql = "SELECT p.DBLP_KEY, title, url, year, publisher ";
 				$this->sql .= "FROM thesis t, publications p WHERE ((t.DBLP_KEY = p.DBLP_KEY) AND (t.masterifTrue = 1)) ";
 				break;
 			case "phd":
-				$this->sql = "SELECT DBLP_KEY, title, url, year, publisher, isbnPhd ";
+				$this->sql = "SELECT p.DBLP_KEY, title, url, year, publisher, isbnPhd ";
 				$this->sql .= "FROM thesis t, publications p WHERE ((t.DBLP_KEY = p.DBLP_KEY) AND (t.masterifTrue = 0)) ";
 				break;
 			default:
-				$this->sql = "SELECT DBLP_KEY, title, url, year, publisher ";
+				$this->sql = "SELECT p.DBLP_KEY, title, url, year, publisher ";
 				$this->sql .= "FROM publications p WHERE 1 ";
 		}
 	}

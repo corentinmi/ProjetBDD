@@ -12,7 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class MainClass {//http://www.java2s.com/Code/Java/Database-SQL-JDBC/Createtableformysqldatabase.htm
 
-  private static final String USER_TABLE = "create table if not exists User (email VARCHAR(20), password VARCHAR(20), administrator BOOLEAN not null default 0)";//0 (meaning false) or 1 (meaning true)
+  private static final String USER_TABLE = "create table if not exists User (email VARCHAR(20), password VARCHAR(20), administrator BOOLEAN not null default 0), PRIMARY KEY (email)";//0 (meaning false) or 1 (meaning true)
   private static final String PUBLICATION_TABLE = "create table  if not exists Publications (DBLP_KEY INT PRIMARY KEY DEFAULT 0, title VARCHAR(255), url VARCHAR(255), year YEAR(4),publisher VARCHAR(20))";
   private static final String AUTHOR_TABLE = "create table if not exists Author (DBLP_KEY_AUTHOR INT PRIMARY KEY,Aname VARCHAR(50))";
   private static final String PUBLICATION_AUTHOR_TABLE = "create table if not exists PublicationsAuthor (DBLP_KEY INT PRIMARY KEY, DBLP_KEY_AUTHOR INT)";

@@ -17,6 +17,16 @@ Class Html {
 		return $html;
 	}
 	
+	public function makeTargetForm($fields, $validate, $target) {
+		$html = "<form method=POST action='".$target."'><table>";
+		foreach($fields as $item) {
+			$html .= "<tr><td>".$item[0]."</td><td><input type='".$item[2]."' value='".$item[3]."' name='".$item[1]."' /></td></tr>";
+		}
+		$html .= "<tr><td colspan=2><input type='submit' value='".$validate."' /></td></tr>";
+		$html .= "</table></form>";
+		return $html;
+	}
+	
 	public function makeGetLink($target, $get, $name) {
 		$html = "<a href='".$target."?";
 		foreach ($get as $field => $value) {

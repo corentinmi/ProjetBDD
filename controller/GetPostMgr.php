@@ -28,6 +28,14 @@ Class GetPostMgr {
 			return false;
 	}
 	
+	public function isSetPost($item) {
+		return (isset($this->post[$item]));
+	}
+	
+	public function isSetGet($item) {
+		return (isset($this->get[$item]));
+	}
+	
 }
 
 ?>

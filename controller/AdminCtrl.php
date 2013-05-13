@@ -3,15 +3,22 @@
 require_once("view/ShowAdmin.php");
 require_once("model/Admin.php");
 require_once("controller/GetPostMgr.php");
+require_once("model/Account.php");
 
 Class AdminCtrl {
 
 	private $gpm;
 	private $view;
 	private $admin;
+	private $account;
 
 	public function __construct($gpm) {
 		$this->gpm = $gpm;
+		
+		$this->account = new Account();
+		
+		if (!($this->account->isAdmin()))
+			exit("Access Restricted");
 
 		$this->admin = new Admin();
 		$this->view = new ShowAdmin($this->admin);
@@ -76,6 +83,8 @@ Class AdminCtrl {
 					$this->view->printActionRequired();
 			}
 		}
+		
+		$this->view->printPage();
 	}
 
 }

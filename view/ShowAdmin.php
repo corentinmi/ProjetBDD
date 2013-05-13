@@ -6,14 +6,15 @@ require_once("model/Admin.php");
 Class ShowAdmin extends Template {
 	
 	private $admin;
+	private $page;
 
-/*	public function printPage() {
+	public function printPage() {
 		$this->printHeader();
-		$this->printUserCP();
+		$this->page;
 		$this->printSideMenu();
 		$this->printFooter();
 		$this->finalize();
-	}*/
+	}
 	
 	public function __construct($admin) {
 		parent::__construct();
@@ -78,18 +79,18 @@ Class ShowAdmin extends Template {
 	}
 	
 	public function printEditFinish() {
-		echo "Modification Successful ! ";
-		echo $this->getHtml()->makeLink("index.php", "Go Back");
+		$this->page .= "Modification Successful ! ";
+		$this->page .= $this->getHtml()->makeLink("index.php", "Go Back");
 	}
 	
 	public function printAddFinish() {
-		echo "Insertion Successful ! ";
-		echo $this->getHtml()->makeLink("index.php", "Go Back");
+		$this->page .= "Insertion Successful ! ";
+		$this->page .= $this->getHtml()->makeLink("index.php", "Go Back");
 	}
 	
 	public function printDeleteFinish() {
-		echo "Deletion Successful ! ";
-		echo $this->getHtml()->makeLink("index.php", "Go Back");
+		$this->page .= "Deletion Successful ! ";
+		$this->page .= $this->getHtml()->makeLink("index.php", "Go Back");
 	}
 
 }
