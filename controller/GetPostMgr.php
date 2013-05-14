@@ -1,7 +1,5 @@
 <?php
 
-require_once("model/sql.php");
-
 Class GetPostMgr {
 	
 	private $post;

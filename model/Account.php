@@ -30,7 +30,7 @@ Class Account {
 	public function login($email, $password) {
 		$email = $this->sql->real_escape_string($email);
 		$password = $this->sql->real_escape_string($password);
-		$req = "SELECT * FROM user WHERE ((email = '".$email."') AND (password = '".$password."'))";
+		$req = "SELECT * FROM User WHERE ((email = '".$email."') AND (password = '".$password."'))";
 		$this->sql->query($req);
 		
 		if (($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0)) {

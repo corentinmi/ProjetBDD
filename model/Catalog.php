@@ -1,6 +1,7 @@
 <?php
 
 require_once("model/SearchDetails.php");
+require_once("model/UniqueSearchDetails.php");
 require_once("model/Sql.php");
 
 class Catalog {
@@ -20,31 +21,44 @@ class Catalog {
 	public function getSearchDetails() {
 		return $this->search;
 	}
-
-	/*public function getTable() {
-		if (($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0)) {
-			$j = 0;
-			$array = Array(Array(), Array());
-			$line = $this->sql->getResult()->fetch_assoc();
-			foreach($line as $item => $value) {
-					$array[0][$j] = $item;
-					$array[1][$j] = $value;
-					$j++;		
-			}
-			for ($i = 2; $i < $this->sql->getResult()->num_rows + 1; $i++) {
-				$j = 0;
-				$line = $this->sql->getResult()->fetch_assoc();
-				foreach ($line as $item => $value) {
-					$array[$i][$j] = $value;
-					$j++;
+	
+	public function addAuthorsTable($table) {
+		
+		foreach ($table as &$line) {
+			$search = new UniqueSearchDetails($line['DBLP_KEY']);
+			$this->sql->query($search->makeAuthorsRequest());
+			$authors = "";
+			if ($this->sql->getResult()) {
+				for ($i = 0; $i < $this->sql->getResult()->num_rows; $i++) {
+					$cur = $this->sql->getResult()->fetch_assoc();
+					$authors .= $cur['Aname'];
+					if ($i != $this->sql->getResult()->num_rows - 1)
+						$authors .= ", ";
 				}
-				
 			}
-			return $array;
+			$line['Authors'] = $authors;
 		}
-		else
-			return false;
-	}*/
+		return $table;
+	}
+	
+	public function addEditorsTable($table) {
+	
+		foreach ($table as &$line) {
+			$search = new UniqueSearchDetails($line['DBLP_KEY']);
+			$this->sql->query($search->makeEditorsRequest());
+			$editors = "";
+			if ($this->sql->getResult()) {
+				for ($i = 0; $i < $this->sql->getResult()->num_rows; $i++) {
+					$cur = $this->sql->getResult()->fetch_assoc();
+					$editors .= $cur['Ename'];
+					if ($i != $this->sql->getResult()->num_rows - 1)
+						$editors .= ", ";
+				}
+			}
+			$line['Editors'] = $editors;
+		}
+		return $table;
+	}
 	
 	public function getTable() {
 		if (($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0)) {
@@ -53,6 +67,9 @@ class Catalog {
 				$line = $this->sql->getResult()->fetch_assoc();
 				$array[$i] = $line;
 			}
+			if (($this->search->getType() == "article") || ($this->search->getType() == "book"))
+				$array = $this->addEditorsTable($array);
+			$array = $this->addAuthorsTable($array);
 			return $array;
 		}
 		else

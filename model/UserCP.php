@@ -30,7 +30,7 @@ Class UserCP {
 	}
 	
 	public function addUser($email, $password, $admin) {
-		$req = "INSERT INTO user (email, password, administrator) VALUES ('".$email."', '".$password."', '".$admin."')";
+		$req = "INSERT INTO User (email, password, administrator) VALUES ('".$email."', '".$password."', '".$admin."')";
 		$this->sql->query($req);
 	}
 	

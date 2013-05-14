@@ -60,20 +60,25 @@ Class ShowCatalog extends Template {
 		$i = 0;
 		foreach ($table[0] as $field => $value) {
 			if ($field != "DBLP_KEY") {
-				$get = Array();
-				
-				$get["page"] = "catalog";
-				if ($this->catalog->getSearchDetails()->getType())
-					$get["type"] = $this->catalog->getSearchDetails()->getType();
-				if ($this->catalog->getSearchDetails()->getField())
-					$get["field"] = $this->catalog->getSearchDetails()->getField();
-				if ($this->catalog->getSearchDetails()->getValue())
-					$get["value"] = $this->catalog->getSearchDetails()->getValue();
-				$get["orderBy"] = $field;
-				$get["asc"] = (($this->catalog->getSearchDetails()->getOrderBy() == $field) && (!($this->catalog->getSearchDetails()->getAsc()))) ? 1 : 0;
-				
-				
-				$output[0][$i] = $this->html->makeGetLink("index.php", $get, ucfirst($field));
+				if (($field == "Authors") || ($field == "Editors")) {
+					$output[0][$i] = $field;
+				}
+				else {
+					$get = Array();
+					
+					$get["page"] = "catalog";
+					if ($this->catalog->getSearchDetails()->getType())
+						$get["type"] = $this->catalog->getSearchDetails()->getType();
+					if ($this->catalog->getSearchDetails()->getField())
+						$get["field"] = $this->catalog->getSearchDetails()->getField();
+					if ($this->catalog->getSearchDetails()->getValue())
+						$get["value"] = $this->catalog->getSearchDetails()->getValue();
+					$get["orderBy"] = $field;
+					$get["asc"] = (($this->catalog->getSearchDetails()->getOrderBy() == $field) && (!($this->catalog->getSearchDetails()->getAsc()))) ? 1 : 0;
+					
+					
+					$output[0][$i] = $this->html->makeGetLink("index.php", $get, ucfirst($field));
+				}
 				$i++;
 			}
 		}
