@@ -32,7 +32,7 @@ public class Publication {
 		volume="no volume";
 		number="";
 		pages="";
-		journal_year="";
+		journal_year="2000";
 		
 		
 				

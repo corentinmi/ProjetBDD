@@ -1,3 +1,4 @@
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -91,27 +92,54 @@ public class MyHandler extends DefaultHandler {
 				//boolean verification=(Integer.valueOf(article.year)<=1995 &&  Integer.valueOf(article.year)>=1990);
 				if( Integer.valueOf(article.year)<=2010 &&  Integer.valueOf(article.year)>=2008){
 					try {
-						System.out.println("insert into Publications(DBLP_KEY, title, url, year,publisher) values("
-								+i+",'"+article.title+"','"+article.url+"',"+article.year+",'"+article.publisher+"')");
-						stmt.executeUpdate("insert into Publications(DBLP_KEY,title,url,year,publisher) values("
-								+i+",'"+article.title+"','"+article.url+"',"+article.year+",'"+article.publisher+"')");//les requettes ne fonctionnent pas 
-						
-						stmt.executeUpdate("insert into Article(DBLP_KEY,volume,number,pages,journal_name,journal_year) values("
+						System.out.println("insert ignore into Publications(DBLP_KEY,title,url,year,publisher) values("
+								+"'"+article.title+"','"+article.url+"',"+article.year+",'"+article.publisher+"')");
+						stmt.executeUpdate("insert ignore into Publications(title,url,year,publisher) values("
+								+"'"+article.title+"','"+article.url+"',"+article.year+",'"+article.publisher+"')");
+						i=getLastRowNumber(i);
+						System.out.println("insert ignore into Article(DBLP_KEY_PUBL,volume,number,pages,journal_name,journal_year) values("
+								+i+",'"+article.volume+"','"+article.number+"','"+article.pages+"','"+article.journal_name+"',"+article.journal_year+")");
+						stmt.executeUpdate("insert ignore into Article(DBLP_KEY_PUBL,volume,number,pages,journal_name,journal_year) values("
 								+i+",'"+article.volume+"','"+article.number+"','"+article.pages+"','"+article.journal_name+"',"+article.journal_year+")");
 						
 						while(! authors.isEmpty()){
-							stmt.executeUpdate("insert into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
-							stmt.executeUpdate("insert into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
-							authorNumber++;
+							String authorCur=authors.remove();
+							String authorCurNumber="1";
+							ResultSet rs;
+							rs=stmt.executeQuery("select DBLP_KEY_AUTHOR from Author where Aname='"+authorCur+"'");
+							if (rs.next()){//si l'autheur existe deja
+								authorCurNumber=rs.getString(1);
+								//stmt.executeUpdate("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+rs.getString(1)+",'"+authorCur+"')");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorCurNumber+")");
+							}else {
+								//System.out.println("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
+								stmt.executeUpdate("insert ignore into Author(Aname) values('"+authorCur+"')");
+								authorNumber=getLastRowNumber(authorNumber);
+								System.out.println("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
+								authorNumber++;
+							}
 						}
 						while(! editors.isEmpty()){
-							stmt.executeUpdate("insert into Editor(DBLP_KEY_EDITOR, Ename) values("+editorNumber+", '"+editors.remove()+"')");
-							stmt.executeUpdate("insert into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorNumber+", "+i+")");
-							editorNumber++;
+							String editorCur=editors.remove();
+							String editorCurNumber="1";
+							ResultSet rs;
+							rs=stmt.executeQuery("select DBLP_KEY_EDITOR from Editor where Ename='"+editorCur+"'");
+							if (rs.next()){
+								editorCurNumber=rs.getString(1);
+								stmt.executeUpdate("insert ignore into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorCurNumber+", "+i+")");
+							}else{
+								//System.out.println("insert ignore into Editor(DBLP_KEY_EDITOR, Ename) values("+editorNumber+", '"+editors.remove()+"')");
+								stmt.executeUpdate("insert ignore into Editor(Ename) values('"+editorCur+"')");
+								editorNumber=getLastRowNumber(editorNumber);
+								System.out.println("insert ignore into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorNumber+", "+i+")");
+								stmt.executeUpdate("insert ignore into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorNumber+", "+i+")");
+								editorNumber++;
+							}
 						}
 						i++;
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						System.out.println("ERROR");
 						e.printStackTrace();
 					}
 					
@@ -127,22 +155,51 @@ public class MyHandler extends DefaultHandler {
 			if(qName=="book"){
 				if( Integer.valueOf(book.year)<=2010 &&  Integer.valueOf(book.year)>=2008){
 					try {
-						stmt.executeUpdate("insert into Publications(DBLP_KEY,title,url,year,publisher) values("
-								+i+",'"+book.title+"','"+book.url+"',"+book.year+",'"+book.publisher+"')");
-						stmt.executeUpdate("insert into Book(DBLP_KEY,volume,isbn) values("+i+",'"+book.isbn+"')");
+						System.out.println("insert ignore into Publications(title,url,year,publisher) values("
+								+"'"+book.title+"','"+book.url+"',"+book.year+",'"+book.publisher+"')");
+						stmt.executeUpdate("insert ignore into Publications(title,url,year,publisher) values("
+								+"'"+book.title+"','"+book.url+"',"+book.year+",'"+book.publisher+"')");
+						i=getLastRowNumber(i);
+						System.out.println("insert ignore into Book(DBLP_KEY,volume,isbn) values("+i+",'"+book.isbn+"')");
+						stmt.executeUpdate("insert ignore into Book(DBLP_KEY,volume,isbn) values("+i+",'"+book.isbn+"')");
 						while(! authors.isEmpty()){
-							stmt.executeUpdate("insert into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
-							stmt.executeUpdate("insert into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
-							authorNumber++;
+							String authorCur=authors.remove();
+							String authorCurNumber="1";
+							ResultSet rs;
+							rs=stmt.executeQuery("select DBLP_KEY_AUTHOR from Author where Aname='"+authorCur+"'");
+							if (rs.next()){//si l'autheur existe deja
+								authorCurNumber=rs.getString(1);
+								//stmt.executeUpdate("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+rs.getString(1)+",'"+authorCur+"')");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorCurNumber+")");
+							}else {
+								//System.out.println("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
+								stmt.executeUpdate("insert ignore into Author(Aname) values('"+authorCur+"')");
+								authorNumber=getLastRowNumber(authorNumber);
+								System.out.println("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
+								authorNumber++;
+							}
 						}
 						while(! editors.isEmpty()){
-							stmt.executeUpdate("insert into Editor(DBLP_KEY_EDITOR, Ename) values("+editorNumber+", '"+editors.remove()+"')");
-							stmt.executeUpdate("insert into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorNumber+", "+i+")");
-							editorNumber++;
+							String editorCur=editors.remove();
+							String editorCurNumber="1";
+							ResultSet rs;
+							rs=stmt.executeQuery("select DBLP_KEY_EDITOR from Editor where Ename='"+editorCur+"'");
+							if (rs.next()){
+								editorCurNumber=rs.getString(1);
+								stmt.executeUpdate("insert ignore into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorCurNumber+", "+i+")");
+							}else{
+								//System.out.println("insert ignore into Editor(DBLP_KEY_EDITOR, Ename) values("+editorNumber+", '"+editors.remove()+"')");
+								stmt.executeUpdate("insert ignore into Editor(Ename) values('"+editorCur+"')");
+								editorNumber=getLastRowNumber(editorNumber);
+								System.out.println("insert ignore into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorNumber+", "+i+")");
+								stmt.executeUpdate("insert ignore into EditorPublication(DBLP_KEY_EDITOR INT PRIMARY KEY, DBLP_KEY) values("+editorNumber+", "+i+")");
+								editorNumber++;
+							}
 						}
 						i++;
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						System.out.println("ERROR");
 						e.printStackTrace();
 					}
 					
@@ -158,30 +215,54 @@ public class MyHandler extends DefaultHandler {
 				if(Integer.valueOf(thesis.year)<=2010 && Integer.valueOf(thesis.year)>=2008){
 					//insert into publications table and thesis table
 					try {
-						System.out.println("insert into Publications(DBLP_KEY,title,url,year,publisher) values("
-								+i+", '"+thesis.title+"', '"+thesis.url+"', "+thesis.year+",'"+thesis.publisher+"')");
-						stmt.executeUpdate("insert ignore into Publications(DBLP_KEY,title,url,year,publisher) values("
-								+i+", '"+thesis.title+"', '"+thesis.url+"', "+thesis.year+",'"+thesis.publisher+"')");
-						System.out.println("insert into Thesis(DBLP_KEY,masterifTrue,isbnPhd) values("+i+", "+thesis.master+", '"+thesis.isbn+"')");
+						System.out.println("insert ignore into Publications(title,url,year,publisher) values("
+								+"'"+thesis.title+"', '"+thesis.url+"', "+thesis.year+",'"+thesis.publisher+"')");
+						stmt.executeUpdate("insert ignore into Publications(title,url,year,publisher) values("
+								+"'"+thesis.title+"', '"+thesis.url+"', "+thesis.year+",'"+thesis.publisher+"')");
+						i=getLastRowNumber(i);
+						System.out.println("insert ignore into Thesis(DBLP_KEY,masterifTrue,isbnPhd) values("+i+", "+thesis.master+", '"+thesis.isbn+"')");
 						stmt.executeUpdate("insert ignore into Thesis(DBLP_KEY,masterifTrue,isbnPhd) values("+i+", "+thesis.master+", '"+thesis.isbn+"')");
 						while(! authors.isEmpty()){
-							//System.out.println("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
-							stmt.executeUpdate("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
-							System.out.println("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
-							stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
-							authorNumber++;
+							String authorCur=authors.remove();
+							String authorCurNumber="1";
+							ResultSet rs;
+							rs=stmt.executeQuery("select DBLP_KEY_AUTHOR from Author where Aname='"+authorCur+"'");
+							if (rs.next()){//si l'autheur existe deja
+								authorCurNumber=rs.getString(1);
+								//stmt.executeUpdate("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+rs.getString(1)+",'"+authorCur+"')");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorCurNumber+")");
+							}else {
+								//System.out.println("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+authorNumber+",'"+authors.remove()+"')");
+								stmt.executeUpdate("insert ignore into Author(Aname) values('"+authorCur+"')");
+								authorNumber=getLastRowNumber(authorNumber);
+								System.out.println("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+authorNumber+")");
+								authorNumber++;
+							}
 						}
 						while(! schools.isEmpty()){
-							//System.out.println("insert ignore into School(DBLP_KEY, Sname) values("+schoolNumber+", '"+schools.remove()+"')");
-							stmt.executeUpdate("insert ignore into School(DBLP_KEY, Sname) values("+schoolNumber+", '"+schools.remove()+"')");
-							System.out.println("insert ignore into SchoolThesis(DBLP_KEY, DBLP_KEY_SCH) values("+i+", "+schoolNumber+")");
-							stmt.executeUpdate("insert ignore into SchoolThesis(DBLP_KEY, DBLP_KEY_SCH) values("+i+", "+schoolNumber+")");
-							schoolNumber++;
+							String schoolCur=schools.remove();
+							String schoolCurNumber="1";
+							ResultSet rs;
+							rs=stmt.executeQuery("select DBLP_KEY_AUTHOR from Author where Aname='"+schoolCur+"'");
+							if (rs.next()){
+								schoolCurNumber=rs.getString(1);
+								//stmt.executeUpdate("insert ignore into Author(DBLP_KEY_AUTHOR,Aname) values("+rs.getString(1)+",'"+authorCur+"')");
+								stmt.executeUpdate("insert ignore into PublicationsAuthor(DBLP_KEY, DBLP_KEY_AUTHOR) values("+i+", "+schoolCurNumber+")");
+							}else{
+								//System.out.println("insert ignore into School(DBLP_KEY, Sname) values("+schoolNumber+", '"+schools.remove()+"')");
+								stmt.executeUpdate("insert ignore into School(Sname) values('"+schoolCur+"')");
+								schoolNumber=getLastRowNumber(schoolNumber);
+								System.out.println("insert ignore into SchoolThesis(DBLP_KEY, DBLP_KEY_SCH) values("+i+", "+schoolNumber+")");
+								stmt.executeUpdate("insert ignore into SchoolThesis(DBLP_KEY, DBLP_KEY_SCH) values("+i+", "+schoolNumber+")");
+								schoolNumber++;
+							}
+							
 						}
 						i++;
 						
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						System.out.println("ERROR");
 						e.printStackTrace();
 					}
 
@@ -197,43 +278,45 @@ public class MyHandler extends DefaultHandler {
  
 	public void characters(char ch[], int start, int length) throws SAXException {
  
+		String output; 
 		//System.out.println("--------------ELEMENT:"+element+"--->"+new String(ch, start, length));
 		if(barticle){
 			
-			verif(article,authors, element,new String(ch, start, length));
+			output= verifString(new String(ch, start, length));
+			verif(article,authors, element,output);
 			
 			if(element=="volume"){
-				article.volume= new String(ch, start, length);
+				article.volume= output;
 			}else if(element=="number"){
-				article.number=new String(ch, start, length);
+				article.number=output;
 			}else if(element=="pages"){
-				article.pages=new String(ch, start, length);
+				article.pages=output;
 			}else if(element=="journal"){
 				//ou est ce qu'on trouve le year du journal???? Plusieurs jounaux pour un meme article?
-				article.journal_name=new String(ch, start, length);
+				article.journal_name=output;
 			}else if(element=="editor"){
-				editors.add(new String(ch, start, length));
+				editors.add(output);
 			}
 		}
 		if (bbook) {
-			
-			verif(book,authors, element,new String(ch, start, length));
+			output= verifString(new String(ch, start, length));
+			verif(book,authors, element,output);
 			
 			if(element=="isbn"){
-				book.isbn=new String(ch, start, length);
+				book.isbn=output;
 			}else if(element=="editor"){
-				editors.add(new String(ch, start, length));
+				editors.add(output);
 			}
 		}
  
 		if (bthesis) {
-			
-			verif(thesis,authors, element,new String(ch, start, length));
+			output= verifString(new String(ch, start, length));
+			verif(thesis,authors, element,output);
 			
 			if(element=="school"){
-				schools.add(new String(ch, start, length));
+				schools.add(output);
 			}else if(element=="isbn"){
-				thesis.isbn=new String(ch, start, length);
+				thesis.isbn=output;
 			}
 			
 		}
@@ -255,5 +338,23 @@ public class MyHandler extends DefaultHandler {
 			pub.publisher=finalElement;
 		}
 	}
+	private String verifString(String a){
+		if(a.contains("'")){
+			a=a.replace("'", "\\'");
+		}
+		return a;
+	}
 	
+	private int getLastRowNumber(int n){
+		ResultSet rs;
+		try {
+			rs=stmt.executeQuery("select LAST_INSERT_ID()");
+			rs.next();
+			n=Integer.valueOf(rs.getString(1));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return n;
+	}
 }
