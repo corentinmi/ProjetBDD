@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -339,9 +340,7 @@ public class MyHandler extends DefaultHandler {
 		}
 	}
 	private String verifString(String a){
-		if(a.contains("'")){
-			a=a.replace("'", "\\'");
-		}
+		a= StringEscapeUtils.escapeXml(a);
 		return a;
 	}
 	
