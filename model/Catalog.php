@@ -60,6 +60,25 @@ class Catalog {
 		return $table;
 	}
 	
+	public function addSchoolsTable($table) {
+	
+		foreach ($table as &$line) {
+			$search = new UniqueSearchDetails($line['DBLP_KEY']);
+			$this->sql->query($search->makeSchoolsRequest());
+			$schools = "";
+			if ($this->sql->getResult()) {
+				for ($i = 0; $i < $this->sql->getResult()->num_rows; $i++) {
+					$cur = $this->sql->getResult()->fetch_assoc();
+					$schools .= $cur['Sname'];
+					if ($i != $this->sql->getResult()->num_rows - 1)
+						$schools .= ", ";
+				}
+			}
+			$line['School'] = $schools;
+		}
+		return $table;
+	}
+	
 	public function getTable() {
 		if (($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0)) {
 			$array = Array();
@@ -69,6 +88,8 @@ class Catalog {
 			}
 			if (($this->search->getType() == "article") || ($this->search->getType() == "book"))
 				$array = $this->addEditorsTable($array);
+			if (($this->search->getType() == "phd") || ($this->search->getType() == "master"))
+				$array = $this->addSchoolsTable($array);
 			$array = $this->addAuthorsTable($array);
 			return $array;
 		}

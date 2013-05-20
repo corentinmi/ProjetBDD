@@ -4,6 +4,10 @@ require_once("model/Sql.php");
 require_once("model/UniqueSearchDetails.php");
 require_once("model/AddDetails.php");
 
+require_once("model/AuthorSearch.php");
+require_once("model/EditorSearch.php");
+require_once("model/SchoolSearch.php");
+
 class Admin {
 
 	private $search;
@@ -34,88 +38,75 @@ class Admin {
 	}
 	
 	public function deleteUselessAuthors() {
-		$req = "DELETE FROM Author a WHERE NOT EXISTS (SELECT * FROM PublicationsAuthor p WHERE p.DBLP_KEY_AUTHOR=a.DBLP_KEY_AUTHOR)";
+		$req = "DELETE FROM Author WHERE NOT EXISTS (SELECT * FROM PublicationsAuthor WHERE PublicationsAuthor.DBLP_KEY_AUTHOR=Author.DBLP_KEY_AUTHOR)";
 		$this->sql->query($req);
 	}
 
 	public function deleteUselessEditors() {
-		$req = "DELETE FROM Editor e WHERE NOT EXISTS (SELECT * FROM EditorPublication p WHERE p.DBLP_KEY_EDITOR=e.DBLP_KEY)";
+		$req = "DELETE FROM Editor WHERE NOT EXISTS (SELECT * FROM EditorPublication WHERE EditorPublication.DBLP_KEY_EDITOR=Editor.DBLP_KEY_EDITOR)";
 		$this->sql->query($req);
 	}
 	
 	public function deleteUselessSchools() {
-		$req = "DELETE FROM School s WHERE NOT EXISTS (SELECT * FROM SchoolThesis p WHERE p.DBLP_KEY_SCH=s.DBLP_KEY)";
+		$req = "DELETE FROM School WHERE NOT EXISTS (SELECT * FROM SchoolThesis WHERE SchoolThesis.DBLP_KEY_SCH=School.DBLP_KEY)";
 		$this->sql->query($req);
 	}
 	
-	public function editData($id, $type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd, $authors, $editors, $schools) {
+	public function editData($id, $type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd, $authorLine, $editorLine, $schoolLine) {
 		$this->search = new UniqueSearchDetails($id);
 		$this->sql->query($this->search->makeModificationRequest($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd));
 		
+		$authors = explode(";", $authorLine);
+		$editors = explode(";", $editorLine);
+		$schools = explode(";", $schoolLine);
+		
 		$this->sql->query($this->search->deletePublicationsAuthors());
-		foreach ($authors as $author) {
-			$search = new AuthorSearch($author);
-			$this->sql->query($search->makeExistRequest());
-			
-			if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
-				$aid = $this->sql->getResult->fetch_assoc['DBLP_KEY_AUTHOR'];
-			}
-			else {
-				$this->sql->query($search->makeInsertRequest());
-				$aid = $this->sql->insert_id;
-			}
-			
-			$this->sql->query($search->makePublicationsAuthorInsertRequest($id, $aid));
-		}
-		
-		$this->sql->query($this->search->deletePublicationsEditors());
-		foreach ($editors as $editor) {
-			$search = new EditorSearch($editor);
-			$this->sql->query($search->makeExistRequest());
-				
-			if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
-				$eid = $this->sql->getResult->fetch_assoc['DBLP_KEY'];
-			}
-			else {
-				$this->sql->query($search->makeInsertRequest());
-				$eid = $this->sql->insert_id;
-			}
-				
-			$this->sql->query($search->makePublicationsEditorInsertRequest($id, $eid));
-		}
-		
-		$this->deleteUselessEditors();
-		$this->deleteUselessAuthors();
-	}
-	
-	public function addData($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd, $authors, $editors, $schools) {
-		$this->search = new AddDetails();
-		$this->sql->multi_query($this->search->makeAddRequest($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd));
-		
-		if ($authors) {
+		if ($authorLine) {
 			foreach ($authors as $author) {
 				$search = new AuthorSearch($author);
 				$this->sql->query($search->makeExistRequest());
-			
+				
 				if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
-					$aid = $this->sql->getResult->fetch_assoc['DBLP_KEY_AUTHOR'];
+					$assoc = $this->sql->getResult()->fetch_assoc();
+					$aid = $assoc['DBLP_KEY_AUTHOR'];
 				}
 				else {
 					$this->sql->query($search->makeInsertRequest());
 					$aid = $this->sql->insert_id;
 				}
-			
+				
 				$this->sql->query($search->makePublicationsAuthorInsertRequest($id, $aid));
 			}
 		}
 		
-		if ($editors) {
+		$this->sql->query($this->search->deletePublicationsEditors());
+		if ($editorLine) {
 			foreach ($editors as $editor) {
 				$search = new EditorSearch($editor);
 				$this->sql->query($search->makeExistRequest());
+					
+				if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
+					$assoc = $this->sql->getResult()->fetch_assoc();
+					$eid = $assoc['DBLP_KEY'];
+				}
+				else {
+					$this->sql->query($search->makeInsertRequest());
+					$eid = $this->sql->insert_id;
+				}
+					
+				$this->sql->query($search->makePublicationsEditorInsertRequest($id, $eid));
+			}
+		}
+		
+		$this->sql->query($this->search->deletePublicationsSchools());
+		if ($schoolLine) {
+			foreach ($schools as $school) {
+				$search = new SchoolSearch($school);
+				$this->sql->query($search->makeExistRequest());
 			
 				if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
-					$sid = $this->sql->getResult->fetch_assoc['DBLP_KEY'];
+					$assoc = $this->sql->getResult()->fetch_assoc();
+					$sid = $assoc['DBLP_KEY'];
 				}
 				else {
 					$this->sql->query($search->makeInsertRequest());
@@ -126,13 +117,48 @@ class Admin {
 			}
 		}
 		
-		if ($schools) {
-			foreach ($schools as $school) {
-				$search = new SchoolSearch($school);
+		$this->deleteUselessEditors();
+		$this->deleteUselessAuthors();
+		$this->deleteUselessSchools();
+	}
+	
+	public function addData($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd, $authorLine, $editorLine, $schoolLine) {
+		$this->search = new AddDetails();
+		$req = $this->search->makeAddRequest($type, $title, $url, $year, $publisher, $isbn, $volume, $number, $pages, $journal_name, $journal_year, $masterifTrue, $isbnPhd);
+		$this->sql->query($req[0]);
+		$id = $this->sql->insert_id;
+		$this->sql->query($req[1]);
+		
+		$authors = explode(";", $authorLine);
+		$editors = explode(";", $editorLine);
+		$schools = explode(";", $schoolLine);
+		
+		if ($authorLine) {
+			foreach ($authors as $author) {
+				$search = new AuthorSearch($author);
 				$this->sql->query($search->makeExistRequest());
 			
 				if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
-					$eid = $this->sql->getResult->fetch_assoc['DBLP_KEY'];
+					$assoc = $this->sql->getResult()->fetch_assoc();
+					$aid = $assoc['DBLP_KEY_AUTHOR'];
+				}
+				else {
+					$this->sql->query($search->makeInsertRequest());
+					$aid = $this->sql->insert_id;
+				}
+			
+				$this->sql->query($search->makePublicationsAuthorInsertRequest($id, $aid));
+			}
+		}
+		
+		if ($editorLine) {
+			foreach ($editors as $editor) {
+				$search = new EditorSearch($editor);
+				$this->sql->query($search->makeExistRequest());
+			
+				if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
+					$assoc = $this->sql->getResult()->fetch_assoc();
+					$eid = $assoc['DBLP_KEY_EDITOR'];
 				}
 				else {
 					$this->sql->query($search->makeInsertRequest());
@@ -142,20 +168,25 @@ class Admin {
 				$this->sql->query($search->makePublicationsEditorInsertRequest($id, $eid));
 			}
 		}
-		foreach ($schools as $school) {
-			$search = new EditorSearch($editor);
-			$this->sql->query($search->makeExistRequest());
 		
-			if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
-				$eid = $this->sql->getResult->fetch_assoc['DBLP_KEY_AUTHOR'];
+		if ($schoolLine) {
+			foreach ($schools as $school) {
+				$search = new SchoolSearch($school);
+				$this->sql->query($search->makeExistRequest());
+			
+				if ( ($this->sql->getResult()) && ($this->sql->getResult()->num_rows > 0) ) {
+					$assoc = $this->sql->getResult()->fetch_assoc();
+					$sid = $assoc['DBLP_KEY'];
+				}
+				else {
+					$this->sql->query($search->makeInsertRequest());
+					$sid = $this->sql->insert_id;
+				}
+			
+				$this->sql->query($search->makePublicationsSchoolInsertRequest($id, $sid));
 			}
-			else {
-				$this->sql->query($search->makeInsertRequest());
-				$eid = $this->sql->insert_id;
-			}
-		
-			$this->sql->query($search->makePublicationsEditorInsertRequest($id, $eid));
 		}
+
 	}
 	
 	public function setUniqueSearch($id) {
@@ -185,6 +216,7 @@ class Admin {
 			$this->item = $this->sql->getResult()->fetch_assoc();
 			$this->type = "thesis";
 			$this->addAuthors();
+			$this->addSchools();
 			return;
 		}
 	}
@@ -228,6 +260,21 @@ class Admin {
 			}
 		}
 		$this->item['Editors'] = $editors;
+	}
+	
+	public function addSchools() {
+	
+		$this->sql->query($this->search->makeSchoolsRequest());
+		$schools = "";
+		if ($this->sql->getResult()) {
+			for ($i = 0; $i < $this->sql->getResult()->num_rows; $i++) {
+				$cur = $this->sql->getResult()->fetch_assoc();
+				$schools .= $cur['Sname'];
+				if ($i != $this->sql->getResult()->num_rows - 1)
+					$schools .= ";";
+			}
+		}
+		$this->item['Schools'] = $schools;
 	}
 
 }

@@ -6,7 +6,8 @@ class Sql extends mysqli {
 	private $req;
 	
 	public function __construct() {
-		parent::__construct("mysql10.000webhost.com", "a6940219_admin", "polytech2015", "a6940219_dblp");
+		//parent::__construct("mysql10.000webhost.com", "a6940219_admin", "polytech2015", "a6940219_dblp");
+		parent::__construct("localhost", "root", "", "test");
 	}
 	
 	public function getResult() {

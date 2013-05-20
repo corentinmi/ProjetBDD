@@ -10,7 +10,7 @@ Class ShowAdmin extends Template {
 
 	public function printPage() {
 		$this->printHeader();
-		$this->page;
+		echo $this->page;
 		$this->printSideMenu();
 		$this->printFooter();
 		$this->finalize();
@@ -30,7 +30,6 @@ Class ShowAdmin extends Template {
 					  Array("Year", "year", "text", ""),
 					  Array("Publisher", "publisher", "text", ""),
 					  Array("Isbn", "isbn", "text", ""),
-					  Array("Editor_name", "editor_name", "text", ""),
 					  Array("Volume", "volume", "text", ""),
 					  Array("Number", "number", "text", ""),
 					  Array("Pages", "pages", "text", ""),
@@ -38,6 +37,9 @@ Class ShowAdmin extends Template {
 					  Array("Journal_year", "journal_year", "text", ""),
 					  Array("MasterifTrue", "masterifTrue", "text", ""),
 					  Array("IsbnPhd", "isbnPhd", "text", ""),
+					  Array("Authors", "Authors", "text", ""),
+					  Array("Editors", "Editors", "text", ""),
+					  Array("Schools", "Schools", "text", ""),
 					  Array("", "finalize", "hidden", "1"));
 		echo $this->getHtml()->makeForm($form, "Ajouter");
 		

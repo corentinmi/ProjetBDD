@@ -40,8 +40,9 @@ Class AdminCtrl {
 											   $this->gpm->post("journal_year"),
 											   $this->gpm->post("masterifTrue"),
 											   $this->gpm->post("isbnPhd"),
-											   $this->gpm->post("authors"),
-											   $this->gpm->post("editors"));
+											   $this->gpm->post("Authors"),
+											   $this->gpm->post("Editors"),
+											   $this->gpm->post("Schools"));
 						$this->view->printAddFinish();
 					}
 					else
@@ -62,8 +63,9 @@ Class AdminCtrl {
 										   $this->gpm->post("journal_year"),
 										   $this->gpm->post("masterifTrue"),
 										   $this->gpm->post("isbnPhd"),
-										   $this->gpm->post("authors"),
-										   $this->gpm->post("editors"));
+										   $this->gpm->post("Authors"),
+										   $this->gpm->post("Editors"),
+										   $this->gpm->post("Schools"));
 					$this->view->printEditFinish();
 					break;
 				default:

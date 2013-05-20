@@ -48,6 +48,7 @@ Class ShowUserCP extends Template {
 		if ($this->userCP->isAdmin()) {
 			$this->page .= "Welcome, administrator <br /><br />";
 			$linkList = array(	$this->getHtml()->makeLink("index.php?page=UserCP&action=addUser", "Add User"),
+								$this->getHtml()->makeLink("index.php?page=Admin&action=add", "Add Publication"),
 								$this->getHtml()->makeLink("index.php?page=UserCP&action=logout", "Logout"));
 		}
 			

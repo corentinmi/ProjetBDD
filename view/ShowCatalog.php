@@ -26,6 +26,50 @@ Class ShowCatalog extends Template {
 		$this->finalize();
 	}
 	
+	private function printNextPageLink() {
+		$index = $this->catalog->getSearchDetails()->getIndex();
+		echo("<br />");
+		if ($index > 0) {
+			$get = Array();
+					
+			$get["page"] = "catalog";
+			if ($this->catalog->getSearchDetails()->getType())
+				$get["type"] = $this->catalog->getSearchDetails()->getType();
+			if ($this->catalog->getSearchDetails()->getField())
+				$get["field"] = $this->catalog->getSearchDetails()->getField();
+			if ($this->catalog->getSearchDetails()->getValue())
+				$get["value"] = $this->catalog->getSearchDetails()->getValue();
+			if ($this->catalog->getSearchDetails()->getOrderBy())
+				$get["orderBy"] = $this->catalog->getSearchDetails()->getOrderBy();
+			if ($this->catalog->getSearchDetails()->getAsc())
+				$get["asc"] = $this->catalog->getSearchDetails()->getAsc();
+			
+			$get["index"] = $index-1;
+			
+			
+			echo $this->html->makeGetLink("index.php", $get, "Previous Page");
+			echo (" &middot; ");
+		}
+		
+		$get = Array();
+			
+		$get["page"] = "catalog";
+		if ($this->catalog->getSearchDetails()->getType())
+			$get["type"] = $this->catalog->getSearchDetails()->getType();
+		if ($this->catalog->getSearchDetails()->getField())
+			$get["field"] = $this->catalog->getSearchDetails()->getField();
+		if ($this->catalog->getSearchDetails()->getValue())
+			$get["value"] = $this->catalog->getSearchDetails()->getValue();
+		if ($this->catalog->getSearchDetails()->getOrderBy())
+			$get["orderBy"] = $this->catalog->getSearchDetails()->getOrderBy();
+		if ($this->catalog->getSearchDetails()->getAsc())
+			$get["asc"] = $this->catalog->getSearchDetails()->getAsc();
+			
+		$get["index"] = $index+1;
+			
+		echo $this->html->makeGetLink("index.php", $get, "Next Page");
+	}
+	
 	private function printCatalog() {
 		$table = $this->catalog->getTable();
 		
@@ -33,6 +77,7 @@ Class ShowCatalog extends Template {
 			$output = $this->makeTableHeader($table);
 			$output = $this->makeTableRowEnds($table, $output);
 			echo $this->html->makeTable($output);
+			$this->printNextPageLink();
 		}
 		else
 			echo "No Records Found";
@@ -60,7 +105,7 @@ Class ShowCatalog extends Template {
 		$i = 0;
 		foreach ($table[0] as $field => $value) {
 			if ($field != "DBLP_KEY") {
-				if (($field == "Authors") || ($field == "Editors")) {
+				if (($field == "Authors") || ($field == "Editors") || ($field == "School")) {
 					$output[0][$i] = $field;
 				}
 				else {

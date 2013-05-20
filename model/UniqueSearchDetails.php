@@ -82,7 +82,12 @@ Class UniqueSearchDetails {
 	}
 	
 	public function makeEditorsRequest() {
-		$this->sql = "SELECT Ename FROM EditorPublication p, Editor e WHERE ((p.DBLP_KEY=".$this->id.") AND (p.DBLP_KEY_EDITOR = a.DBLP_KEY))";
+		$this->sql = "SELECT Ename FROM EditorPublication p, Editor e WHERE ((p.DBLP_KEY=".$this->id.") AND (p.DBLP_KEY_EDITOR = e.DBLP_KEY_EDITOR))";
+		return $this->sql;
+	}
+	
+	public function makeSchoolsRequest() {
+		$this->sql = "SELECT Sname FROM SchoolThesis p, School s WHERE ((p.DBLP_KEY=".$this->id.") AND (p.DBLP_KEY_SCH = s.DBLP_KEY))";
 		return $this->sql;
 	}
 	
@@ -93,6 +98,11 @@ Class UniqueSearchDetails {
 	
 	public function deletePublicationsEditors() {
 		$this->sql = "DELETE FROM EditorPublication WHERE DBLP_KEY=".$this->id;
+		return $this->sql;
+	}
+	
+	public function deletePublicationsSchools() {
+		$this->sql = "DELETE FROM SchoolThesis WHERE DBLP_KEY=".$this->id;
 		return $this->sql;
 	}
 	
