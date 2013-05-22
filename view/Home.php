@@ -19,6 +19,7 @@ Class Home extends Template {
 							$this->getHtml()->makeLink("index.php?page=Catalog&type=master", "Master Thesis"),
 							$this->getHtml()->makeLink("index.php?page=Catalog&type=phd", "PhD Thesis"),
 							$this->getHtml()->makeLink("index.php?page=Search", "Search"),
+							$this->getHtml()->makeLink("index.php?page=Request", "Show the 6 requests"),
 					 	  	$this->getHtml()->makeLink("index.php?page=UserCP", "User Control Panel"));
 		echo $this->getHtml()->makeList($linkList);
 	}

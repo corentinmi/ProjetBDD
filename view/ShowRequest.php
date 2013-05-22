@@ -2,6 +2,8 @@
 
 require_once("model/Request.php");
 
+require_once("view/Template.php");
+
 Class ShowRequest extends Template {
 	
 	private $request;
@@ -32,15 +34,17 @@ Class ShowRequest extends Template {
 	}
 	
 	private function showSelectForm() {
-		$this->page .= $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°1");
-		$this->page .= $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°2");
+		$list[0] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°1");
+		$list[1] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°2");
 		
-		$this->page .= $this->getHtml()->makeGetForm(Array(Array("Author", "name", "text", ""),
+		$list[2] = $this->getHtml()->makeGetForm(Array(Array("Author", "name", "text", ""),
 				Array("", "page", "hidden", "request"),
 				Array("", "id", "hidden", "3")), "Requête n°2");
-		$this->page .= $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°4");
-		$this->page .= $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°5");
-		$this->page .= $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°6");
+		$list[3] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°4");
+		$list[4] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°5");
+		$list[5] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°6");
+		
+		$this->page .= $this->getHtml()->makeList($list);
 	}
 	
 }

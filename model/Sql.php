@@ -30,7 +30,7 @@ class Sql extends mysqli {
 	
 	public function query($req) {
 		$this->req = $req;
-		
+		echo $req . "<br /><br />";
 		$this->result = parent::query($this->req);
 	}
 	

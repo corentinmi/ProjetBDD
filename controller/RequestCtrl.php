@@ -1,5 +1,6 @@
 <?php
 
+require_once("controller/GetPostMgr.php");
 require_once("model/Request.php");
 require_once("view/ShowRequest.php");
 
