@@ -16,11 +16,11 @@ Class Template {
 	}
 	
 	public function printHeader() {
-		
+		include("view/templates/header.php"); 
 	}
 	
 	public function printFooter() {
-		
+		include("view/templates/sidebar&footer.php"); 
 	}
 	
 	public function printSideMenu() {
