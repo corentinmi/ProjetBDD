@@ -39,7 +39,7 @@ Class ShowRequest extends Template {
 		
 		$list[2] = $this->getHtml()->makeGetForm(Array(Array("Author", "name", "text", ""),
 				Array("", "page", "hidden", "request"),
-				Array("", "id", "hidden", "3")), "Requête n°2");
+				Array("", "id", "hidden", "3")), "Requête n°3");
 		$list[3] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°4");
 		$list[4] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°5");
 		$list[5] = $this->getHtml()->makeLink("index.php?page=request&id=1", "Requête n°6");

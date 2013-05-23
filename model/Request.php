@@ -11,6 +11,7 @@ Class Request {
 	private $req;
 	
 	public function __construct($id, $name) {
+		set_time_limit(3600);
 		$this->id = $id;
 		$this->name = $name;
 		
@@ -25,24 +26,9 @@ Class Request {
 	
 	public function getTable() {
 		$table = Array();
-		if ($this->id != 6) {
-			$this->sql->query($this->req);
-			for ($i = 0; $i < $this->sql->getResult()->num_rows; $i++) {
-				$table[$i] = $this->sql->getResult()->fetch_assoc();
-			}
-		}
-		else {
-			$this->sql->multi_query($this->req);
-			$j = 0;
-			while ($this->sql->next_result()) {
-				$result = $this->sql->store_result();
-				for ($i = 0; $i < $this->result->num_rows; $i++) {
-					$table[$j] = $this->result->fetch_assoc();
-					$j++;
-				}
-				$table[$j] = Array("------------");
-				$j++;
-			}
+		$this->sql->query($this->req);
+		for ($i = 0; $i < $this->sql->getResult()->num_rows; $i++) {
+			$table[$i] = $this->sql->getResult()->fetch_assoc();
 		}
 		
 		return $table;
@@ -97,39 +83,18 @@ Class Request {
 				break;
 			case 5:
 				$this->req = "	SELECT Aname, MAX(counted) FROM (
-				SELECT a.Aname, COUNT(DISTINCT ar.Journal_name) AS counted
-				FROM Article ar, PublicationsAuthor pa, Author a
-				WHERE ar.DBLP_KEY_PUBL = pa.DBLP_KEY AND a.DBLP_KEY_AUTHOR = pa.DBLP_KEY_AUTHOR
-				GROUP BY a.Aname) as counts";
+								SELECT a.Aname, COUNT(DISTINCT ar.Journal_name) AS counted
+								FROM Article ar, PublicationsAuthor pa, Author a
+								WHERE ar.DBLP_KEY_PUBL = pa.DBLP_KEY AND a.DBLP_KEY_AUTHOR = pa.DBLP_KEY_AUTHOR
+								GROUP BY a.Aname) as counts";
 				break;
 			case 6:
-				$this->req = "	SELECT Journal name , COUNT(*) FROM Article a
-								WHERE a.Journal name IN (SELECT DISTINCT Journal name FROM
-								Article ar WHERE Volume > AVG(Volume) GROUP BY ar.Journal name)
-								GROUP BY a.Journal name;
-								SELECT Journal name , AVG(COUNT(*)) FROM Article a, Pub-
-								lications p WHERE a.Journal name IN (SELECT DISTINCT Jour-
-								nal name FROM Article ar WHERE Volume > AVG(Volume) GROUP
-								BY ar.Journal name) GROUP BY a.Journal name, p.Year;
-								SELECT Journal name , AVG(COUNT(*))
-								FROM Article a, PublicationAuthor pa
-								WHERE ar.Journal name IN (SELECT DISTINCT Journal name FROM
-								8
-								Article ar WHERE Volume > AVG(Volume) GROUP BY ar.Journal name)
-								GROUP BY a.DBLP_KEY USING a.DBLP_KEY=pa.DBLP_KEY;";
-				SELECT Journal_name , COUNT(*) FROM Article a WHERE a.Journal_name IN (SELECT DISTINCT ar.Journal_name FROM Article ar GROUP BY ar.Journal_name HAVING Volume > AVG(Volume)) GROUP BY a.Journal_name;
-				SELECT Journal_name , AVG(COUNT(*)) FROM Article a, Publications p WHERE a.Journal_name IN (SELECT DISTINCT ar.Journal_name FROM Article ar GROUP BY ar.Journal_name HAVING Volume > AVG(Volume)) GROUP BY a.Journal_name) GROUP BY a.Journal_name, p.Year;
-				SELECT Journal_name , AVG(COUNT(*)) FROM Article a, PublicationAuthor pa WHERE ar.Journal_name IN (SELECT DISTINCT ar.Journal_name FROM Article ar GROUP BY ar.Journal_name HAVING Volume > AVG(Volume)) GROUP BY a.Journal_name) GROUP BY a.DBLP_KEY USING a.DBLP_KEY=pa.DBLP_KEY;
-				
-				SELECT Journal_name, AVG( counted )
-				FROM (
-				
-				SELECT a.Journal_name, COUNT( * ) AS counted
-				FROM Article a, Publications p
-				WHERE a.DBLP_KEY_PUBL = p.DBLP_KEY
-				GROUP BY a.Journal_name, p.Year
-				) AS counts
-				WHERE Journal_name IN (SELECT DISTINCT Journal_name FROM Article ar GROUP BY ar.Journal_name HAVING Volume > AVG(Volume))
+				$this->req = "	SELECT mix.Journal_name, maxim, aver, amount, aperyear, avgauthperart FROM
+								(SELECT Journal_name, AVG(aperart) AS avgauthperart FROM (SELECT Journal_name, COUNT(*) AS aperart FROM Article a, PublicationsAuthor pa WHERE a.DBLP_KEY_PUBL = pa.DBLP_KEY GROUP BY a.Journal_name, pa.DBLP_KEY) as dinga) as donga, 
+								(SELECT Journal_name, AVG(yart) AS aperyear FROM (SELECT Journal_name, COUNT(*) as yart FROM Article art, Publications pap WHERE pap.DBLP_KEY = art.DBLP_KEY_PUBL GROUP BY Journal_name, Year) as derp) as herp,
+								(SELECT Journal_name, MAX(Volume) AS maxim, COUNT(*) AS amount FROM Article GROUP BY Journal_name) as mix,
+								(SELECT AVG(maxim) as aver FROM (SELECT Journal_name, MAX(Volume) AS
+								maxim FROM Article GROUP BY Journal_name) as mx) as av WHERE mix.maxim > av.aver AND herp.Journal_name = mix.Journal_name AND donga.Journal_name = mix.Journal_name;";
 				break;
 		}
 	}
